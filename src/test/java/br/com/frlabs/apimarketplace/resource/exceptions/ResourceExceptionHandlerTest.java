@@ -1,5 +1,6 @@
 package br.com.frlabs.apimarketplace.resource.exceptions;
 
+import br.com.frlabs.apimarketplace.services.exceptions.DataIntegratyViolationException;
 import br.com.frlabs.apimarketplace.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -29,6 +30,21 @@ class ResourceExceptionHandlerTest {
         assertEquals(StandartError.class, response.getBody().getClass());
         assertEquals("Object not found!!", response.getBody().getError());
         assertEquals(404, response.getBody().getStatus());
+    }
+
+    @Test
+    void when_dataIntegraty_thenReturn_responseEntityStandartError() {
+        ResponseEntity<StandartError> response = resourceExceptionHandler.dataIntegratyViolationException(
+                new DataIntegratyViolationException(""),
+                new MockHttpServletRequest()
+        );
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(StandartError.class, response.getBody().getClass());
+        assertEquals("Data Integraty violation!!", response.getBody().getError());
+        assertEquals(400, response.getBody().getStatus());
     }
 
 }
