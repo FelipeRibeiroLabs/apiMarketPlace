@@ -79,4 +79,15 @@ class UserResourceTest {
         assertEquals(NAME_1_EMAIL_COM, response.getBody().get(0).getEmail());
     }
 
+    @Test
+    void when_createUser_thenReturn_UserDto() {
+        when(userService.createUser(any())).thenReturn(user);
+
+        ResponseEntity<UserDTO> response = userResource.createUser(userDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+
+    }
+
 }
