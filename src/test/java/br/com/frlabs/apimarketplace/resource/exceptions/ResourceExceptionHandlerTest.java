@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -35,7 +37,7 @@ class ResourceExceptionHandlerTest {
     @Test
     void when_dataIntegraty_thenReturn_responseEntityStandartError() {
         ResponseEntity<StandartError> response = resourceExceptionHandler.dataIntegratyViolationException(
-                new DataIntegratyViolationException(""),
+                new DataIntegratyViolationException("Data Integraty violation!!"),
                 new MockHttpServletRequest()
         );
         assertNotNull(response);
@@ -45,6 +47,8 @@ class ResourceExceptionHandlerTest {
         assertEquals(StandartError.class, response.getBody().getClass());
         assertEquals("Data Integraty violation!!", response.getBody().getError());
         assertEquals(400, response.getBody().getStatus());
+        assertNotEquals("/user/2", response.getBody().getPath());
+        assertNotEquals(LocalDateTime.now(), response.getBody().getTimestamp());
     }
 
 }
